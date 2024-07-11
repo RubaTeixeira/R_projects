@@ -1,0 +1,133 @@
+---
+title: "Cyclistic case study"
+author: "Roberval Teixeira"
+date: "2024-07-05"
+output: html_document
+---
+
+## Como usei R nesse projeto
+
+### Prepação
+
+Nesse estudo de caso utilizei o pacote Tidyverse, com suas bibliotecas, incluindo também a Lubridate para trabalhar com datas e horas.
+
+```{r}
+install.packages("tidyverse")
+library(tidyverse)
+library(lubridate)
+```
+
+Após isso, fiz upload da base de dados utilizada, foram 12 arquivos, relativo a um ano de dados. A origem dos arquivos está aqui: <https://divvy-tripdata.s3.amazonaws.com/index.html>
+
+```{r}
+trip_06_2023 <-read_csv("202306-divvy-tripdata.csv")
+trip_07_2023 <-read_csv("202307-divvy-tripdata.csv")
+trip_08_2023 <-read_csv("202308-divvy-tripdata.csv")
+trip_09_2023 <-read_csv("202309-divvy-tripdata.csv")
+trip_10_2023 <-read_csv("202310-divvy-tripdata.csv")
+trip_11_2023 <-read_csv("202311-divvy-tripdata.csv")
+trip_12_2023 <-read_csv("202312-divvy-tripdata.csv")
+trip_01_2024 <-read_csv("202401-divvy-tripdata.csv")
+trip_02_2024 <-read_csv("202402-divvy-tripdata.csv")
+trip_03_2024 <-read_csv("202403-divvy-tripdata.csv")
+trip_04_2024 <-read_csv("202404-divvy-tripdata.csv")
+trip_05_2024 <-read_csv("202405-divvy-tripdata.csv")
+```
+
+Certo, são muitos arquivos, então transformei em um único df:
+
+```{r}
+all_trips <- bind_rows(trip_06_2023, trip_07_2023, trip_08_2023, trip_09_2023, trip_10_2023, trip_11_2023, trip_12_2023, trip_01_2024, trip_02_2024, trip_03_2024, trip_04_2024, trip_05_2024)
+```
+
+Como próximo passo, fiz uma inspeção do df:
+
+```{r}
+colnames(all_trips)
+nrow(all_trips)
+dim(all_trips)
+head(all_trips)
+str(all_trips)
+```
+
+### Processamento
+
+Pronto! Aqui iniciamos o trabalho de ajuste dos dados e análise. Nesse ponto, precisei excluir viagens com menos de 1 minuto, conforme instrução do fornecedor dos dados, pois essa contagem é associada a contagem de tempo indevido, quando as bicicletas são removidas para movimentação ou quando o usuário quer confirmar se a bicicleta foi encaixada corretamente no docker.
+
+Para isso, utilizei o comando:
+
+```{r}
+all_trips <- all_trips[!(all_trips$travel_time<60),]
+```
+
+Perfeito! Outro ponto que precisei ajustar foi a mudança dos dias da semana de número para o nome por extenso.
+
+```{r}
+all_trips <- all_trips %>% 
+  mutate(weekday = recode(weekday,"1" = "Sunday", "2" = "Monday", "3" = "Tuesday", "4" = "Wednesday", "5" = "Thursday", "6" = "Friday", "7" = "Saturday"))
+```
+
+Tudo pronto! Então iniciei a extração das informações para a análise. Primeiro fiz a verificação da divisão de números de usuários casuais e membros:
+
+```{r}
+table(all_trips$user_type)
+```
+
+Queria verificar a média mensal de viagens de todo o período, separando por tipo de usuário.
+
+```{r}
+aggregate(all_trips$travel_time ~ all_trips$user_type + all_trips$travel_month + all_trips$year, FUN = mean)
+```
+
+Achei interessante também verificar a mediana, e os tempos de viagem mínimo e máximo.
+
+```{r}
+aggregate(all_trips$travel_time ~ all_trips$user_type + all_trips$travel_month + all_trips$year, FUN = median)
+aggregate(all_trips$travel_time ~ all_trips$user_type, FUN = min)
+aggregate(all_trips$travel_time ~ all_trips$user_type, FUN = max)
+```
+
+Também queria verificar essa variação de tempo de viagem semanal.
+
+```{r}
+aggregate(all_trips$travel_time ~ all_trips$user_type + all_trips$weekday, FUN = mean)
+aggregate(all_trips$travel_time ~ all_trips$user_type + all_trips$weekday, FUN = median)
+```
+
+Por fim, armazenei os dados relacionados as médias anuais e mensais de tempos e viagem para gerar arquivos os CSV.
+
+```{r}
+avg_anual_trips <- aggregate(all_trips$travel_time ~ all_trips$user_type + all_trips$travel_month + all_trips$year, FUN = mean)
+avg_weekly_trips <- aggregate(all_trips$travel_time ~ all_trips$user_type + all_trips$weekday, FUN = mean)
+```
+
+Gerando os arquivos CSV da análise:
+
+```{r}
+write.csv(avg_anual_trips, file = "C:\\Users\\rubat\\Documents\\Proj2024\\Data Analyst\\Projetos\\Estudo de caso 1\\R_project\\avg_anual_trips.csv", row.names = FALSE)
+write.csv(avg_weekly_trips, file = "C:\\Users\\rubat\\Documents\\Proj2024\\Data Analyst\\Projetos\\Estudo de caso 1\\R_project\\avg_weekly_trips.csv", row.names = FALSE)
+```
+
+Achei importante olhar para o comportamento de uso em relação aos modelos de bicicletas. Para isso, utilizei o seguinte comando:
+
+```{r}
+bike_model <- all_trips %>%
+  group_by(all_trips$weekday, all_trips$bike_type, all_trips$user_type) %>%
+  summarise(daily_count = n(), .groups = 'drop')
+```
+
+Com o novo df bike_model gerado, renomeei as colunas:
+
+```{r}
+bike_model<- rename(bike_model, weekday = "all_trips$weekday",  bike_type = "all_trips$bike_type", user_type = "all_trips$user_type")
+```
+
+E também salvei o arquivo CSV:
+
+```{r}
+write.csv(bike_model, file = "C:\\Users\\rubat\\Documents\\Proj2024\\Data Analyst\\Projetos\\Estudo de caso 1\\R_project\\bike_model.csv", row.names = FALSE)
+```
+
+### Conclusão
+
+Como se trata de um projeto didático optei por criar uma dashboard com o Tableau. [Confira aqui.](https://public.tableau.com/views/Cyclistic_Data_Viz/Cyclistic_Analysis?:language=pt-BR&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)
