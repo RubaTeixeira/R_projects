@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Estudo de caso Cyclistic</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="container-fluid p-2">
+      <nav class="navbar">
+        <div class="container-fluid">
+          <a class="navbar-brand fs-1" href="#">
+            <img
+              src="img/logo.png"
+              alt="Logo"
+              width="100"
+              height="100"
+              class="img-fluid d-inline-block align-text-medium"
+            />
+            Cyclistic
+          </a>
+        </div>
+      </nav>
+      
+    </header>
+    <div class="container-fluid p-4" id="body_content">
+      <h1>Estudo de caso</h1>
+      <section class="container-fluid p-3">
+        <h4>Objetivo</h4>
+        <p>
+          Compreender o comportamento de uso do serviço de compartilhamento de
+          bicicletas e as diferenças entre usuários casuais e membros anuais, a
+          fim de gerar insights que possam ajudar a equipe de marketing a elaborar
+          estratégias para converter usuários casuais em membros anuais e, assim,
+          maximizar o número de planos anuais contratados. Para essa análise,
+          foram usados dados históricos dos últimos 12 meses, relacionados às
+          jornadas dos usuários.
+        </p>
+      </section>
+      <section class="container-fluid p-3">
+        <h4>Total de viagens por tipo de usuário</h4>
+        <figure class="figure">
+          <img src="img/total_trips_by_user_type.png" class="figure-img img-fluid rounded" alt="total de viagens" />
+        </figure>
+        <p>
+          Foram mais de 5 milhões de viagens entre junho de 2023 e maio de 2024.
+          <ul>
+            <li>Mais de 3,6 milhões de viagens de membros</li> 
+            <li>E mais de 1,9 milhão de viagens de usuários casuais </li>
+        </ul>
+        </p>
+        <h4>Tempo médio de viagem mensal (casual x membro)</h4>
+        <figure class="figure">
+          <img src="img/avg_mon_travel_time.png" class="figure-img img-fluid rounded" alt="viagens mensal" />
+        </figure>
+        <p>
+          Temos um número considerável de usuários casuais, e o que chama a
+          atenção é que o tempo médio mensal de viagem é ainda maior do que o dos
+          membros, com uma diferença de quase 50 p.p.
+        </p>
+        <p>
+          Podemos ver no gráfico abaixo que, em média, em uma semana, essa
+          diferença no tempo de viagem tende a aumentar nos finais de semana.
+        </p>
+        <h4>Tempo médio de viagem semanal (casual x membro)</h4>
+        <figure class="figure">
+          <img src="img/avg_week_travel_time.png" class="figure-img img-fluid rounded" alt="viagens semanal" />
+        </figure>
+      </section>
+      <section class="container-fluid p-3">
+        <h4>Uso de bicicletas por modelo</h4>
+        <p>
+          Temos dois modelos de bicicletas, uma elétrica e uma clássica, e aqui
+          analisamos como os membros e usuários casuais usam os modelos.
+        </p>
+        <h5>
+          Número médio de bicicletas usadas por usuários casuais (elétrica x
+          clássica)
+        </h5>
+        <figure class="figure">
+          <img src="img/avg_bike_used_casual.png" class="figure-img img-fluid rounded" alt="casual user" />
+        </figure>
+        <h5>
+          Número médio de bicicletas usadas pelos membros (elétrica x clássica)
+        </h5>
+        <figure class="figure">
+          <img src="img/avg_bike_used_member.png" class="figure-img img-fluid rounded" alt="member user" />
+        </figure>
+        <p>
+          Nessas duas visualizações, podemos ver a tendência, pois os usuários
+          casuais usam o serviço mais nos fins de semana, enquanto os membros o
+          utilizam durante a semana.
+        </p>
+      </section>
+      <section class="container-fluid p-3">
+        <h4>Conclusão</h4>
+        <p>
+          Pensando no cenário apresentado, há uma oportunidade de crescimento
+          dentro do grupo de clientes casuais, principalmente pensando nos finais
+          de semana, mas mas olhando para os dias úteis, é um ponto de atenção, já
+          que o tempo de uso registrado pelos usuários casuais é bastante alto.
+        </p>
+        <p>
+          Para esses usuários casuais, seria interessante pensar em um produto de
+          assinatura mais flexível, tendo em mente os fins de semana, e também é
+          importante reforçar os benefícios que eles podem ter como membros para
+          atrair os usuários dos dias úteis, que usam o serviço por mais tempo e
+          com mais frequência.
+        </p>
+      </section>
+      <section class="container-fluid p-3">
+        <h4>Sobre os dados utilizados:</h4>
+        <p>
+          Esses dados são públicos, armazenados na nuvem, usados sob licença e não
+          contêm contêm informações confidenciais, a fim de garantir a privacidade
+          e a segurança dos dados do usuário.
+          <a href="https://divvy-tripdata.s3.amazonaws.com/index.html">
+            Fonte de dados aqui.
+          </a>
+        </p>
+        <p>
+          Dados tratados com linguagem R, verifique o código
+          <a href="https://github.com/RubaTeixeira/R_projects.git">aqui</a>.
+        </p>
+      </section>
+  </div>
+    <footer class="container-fluid text-center p-2">
+      <p>Desenvolvido por <strong>Ruba Teixeira</strong></p>
+    </footer>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+      integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

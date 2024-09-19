@@ -1,0 +1,15 @@
+header,
+.navbar,
+footer {
+  background-color: #fc9621;
+}
+
+#body_content {
+  background-color: #fad5ab;
+}
+
+h1,
+h4,
+h5 {
+  color: rgb(92, 92, 185);
+}
